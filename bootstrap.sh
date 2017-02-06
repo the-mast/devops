@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 export IP_ADDRESS=$1
 export SSH_KEY=$2
 export MACHINE_NAME=$3
