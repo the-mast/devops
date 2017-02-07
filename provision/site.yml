@@ -1,0 +1,59 @@
+---
+- hosts: all
+  become: yes
+
+  pre_tasks:
+    - name: install wordpress dependencies
+      apt: name={{ item }} state=latest
+      with_items:
+        - mariadb-server
+        - php
+        - apache2
+        - libapache2-mod-php
+        - php7.0-mysql
+
+    - name: enable apache modules
+      apache2_module: name={{ item }}
+      with_items:
+        - php7.0
+        - rewrite
+
+    - name: install database
+      mysql_db: name=wordpress state=present
+
+    - name: create user
+      mysql_user:
+        name: wordpress
+        password: "{{ vars.wordpress_installs[0].dbpass }}"
+        priv: 'wordpress.*:ALL'
+        state: present
+
+  post_tasks:
+    - name: restart apache
+      service: name=apache2 state=restarted
+
+  roles:
+    - role: tersmitten.wordpress
+      notify: restart apache
+
+  vars:
+    wordpress_installs:
+      - name: wordpress
+        dbname: wordpress
+        dbuser: wordpress
+        dbpass: 'heCrE7*d2KEs'
+        dbhost: localhost
+        path: /var/www/html
+        url: http://192.168.33.10
+        title: wordpress
+        admin_name: admin
+        admin_email: root@localhost.localdomain
+        admin_password: 'tuFr8=aPra@a'
+        themes:
+          - name: twentytwelve
+            activate: true
+        plugins: []
+        users: {}
+        options: []
+        queries: []
+
