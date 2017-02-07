@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 $installAnsibleRoles = <<-SHELL
+    apt-get install -y ansible
     ansible-galaxy install tersmitten.wordpress
 SHELL
 
