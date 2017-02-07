@@ -19,6 +19,9 @@
         - php7.0
         - rewrite
 
+    - name: remove default index.html
+      file: path=/var/www/html/index.html state=absent
+
     - name: install database
       mysql_db: name=wordpress state=present
 
