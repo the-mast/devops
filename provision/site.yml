@@ -11,6 +11,7 @@
         - apache2
         - libapache2-mod-php
         - php7.0-mysql
+        - python-mysqldb
 
     - name: enable apache modules
       apache2_module: name={{ item }}
