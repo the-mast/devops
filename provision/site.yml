@@ -48,13 +48,13 @@
         dbpass: 'heCrE7*d2KEs'
         dbhost: localhost
         path: /var/www/html
-        url: http://192.168.33.10
+        url: http://localhost
         title: wordpress
         admin_name: admin
         admin_email: root@localhost.localdomain
         admin_password: 'tuFr8=aPra@a'
         themes:
-          - name: twentytwelve
+          - name: newsdayafrica
             activate: true
         plugins: []
         users: {}
