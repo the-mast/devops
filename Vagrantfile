@@ -32,6 +32,6 @@ Vagrant.configure("2") do |config|
   end
 
   # # configure nodejs workspace
-  # config.vm.provision "shell", inline: $installBuildEssentials
-  # config.vm.provision "shell", path: "provision/install_node.sh", privileged: false
+  config.vm.provision "shell", inline: $installBuildEssentials
+  config.vm.provision "shell", path: "provision/install_node.sh", privileged: false
 end
