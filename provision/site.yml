@@ -54,7 +54,7 @@
         admin_email: dev@localhost.localdomain
         admin_password: 'dev.password'
         themes:
-          - name: newsdayafrica
+          - name: the-mast-theme
             activate: true
         plugins: []
         users: {}
