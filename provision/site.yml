@@ -48,7 +48,7 @@
         dbpass: 'heCrE7*d2KEs'
         dbhost: localhost
         path: /var/www/html
-        url: http://localhost
+        url: http://wordpress.devbox
         title: wordpress
         admin_name: dev
         admin_email: dev@localhost.localdomain
