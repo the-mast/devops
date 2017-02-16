@@ -1,0 +1,6 @@
+# Playbook to provision and configure real infrastructure.
+---
+- hosts: loadbalancer
+  roles:
+    - loadbalancer
+

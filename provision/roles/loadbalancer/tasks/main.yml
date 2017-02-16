@@ -1,0 +1,7 @@
+---
+- name: install dependencies
+  apt: name=curl update_cache=yes
+
+- name: install & configure caddy
+  include: caddy.yml
+
