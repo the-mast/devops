@@ -14,8 +14,10 @@ hosting provider. Credentials for logging into the account can be found in the t
 Host it on a CloudAfrica server with the following ports open: _22_, _80_,
 _2376_, _8000_. CloudAfrica has a firewall configured from its [web interface](https://www.cloudafrica.net/firewall).
 
-### Required Setup
-Please make sure you have [docker](https://www.docker.com/products/docker) and [Drone CLI](http://readme.drone.io/0.5/install/cli/) setup on your machine
+### Requirements
+You will need:
+ + [docker](https://www.docker.com/products/docker)
+ + [Drone CLI](http://readme.drone.io/0.5/install/cli/) setup on your machine
 
 ### Quickstart
 
