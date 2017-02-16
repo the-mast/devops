@@ -20,9 +20,17 @@ function start_drone_ci(){
 	docker-compose up -d
 }
 
+function setup_drone_ci_github(){
+  source env.sh
+  drone secret add --image=themast/docker-wp-theme-build:latest \
+  the-mast/the-mast-theme \
+  GITHUB_TOKEN $GITHUB_TOKEN
+}
+
 function main(){
     make_docker_machine
     start_drone_ci
+    setup_drone_ci_github
 }
 
 main $@
