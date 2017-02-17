@@ -5,3 +5,24 @@
 - name: install & configure caddy
   include: caddy.yml
 
+- name: template the Caddyfile
+  template:
+    dest: /etc/caddy/Caddyfile
+    src: Caddyfile.j2
+    owner: www-data
+    group: www-data
+    mode: 0444
+  notify: restart caddy
+
+- name: ensure site directory exists for staging
+  file:
+    path: "/var/www/staging.{{ SITE_DOMAIN }}/robots.txt"
+    state: directory
+
+- name: add robots.txt for staging
+  copy:
+    dest: "/var/www/staging.{{ SITE_DOMAIN }}/robots.txt"
+    src: robots.txt 
+    owner: www-data
+    group: www-data
+

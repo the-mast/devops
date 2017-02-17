@@ -1,2 +1,3 @@
-staging_ip:
-production_ip:
+SITE_DOMAIN: themastonline.com
+PRODUCTION_HOSTS: "{{ groups['production'] }}"
+STAGING_HOSTS: "{{ groups['staging'] }}"

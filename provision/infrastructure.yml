@@ -2,5 +2,6 @@
 ---
 - hosts: loadbalancer
   roles:
-    - loadbalancer
+    - role: loadbalancer
+      SITE_DOMAIN: 'themastonline.com'
 

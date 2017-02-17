@@ -1,0 +1,14 @@
+staging.{{ SITE_DOMAIN }} {
+  root /var/www/staging.{{ SITE_DOMAIN }}
+
+  proxy / {% for host in STAGING_HOSTS %}{{ hostvars[host]['ansible_host'] }} {% endfor %} {
+    transparent
+    except /robots.txt
+  }
+}
+
+{{ SITE_DOMAIN }}, www.{{ SITE_DOMAIN }} {
+  proxy / {% for host in PRODUCTION_HOSTS %}{{ hostvars[host]['ansible_host'] }} {% endfor %} {
+    transparent
+  }
+}
