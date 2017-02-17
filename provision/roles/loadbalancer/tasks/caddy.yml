@@ -54,6 +54,14 @@
     group: root
     mode: 0770
 
+- name: template the Caddyfile
+  template:
+    dest: /etc/caddy/Caddyfile
+    src: Caddyfile.j2
+    owner: www-data
+    group: www-data
+    mode: 0444
+
 - name: install as systemd service
   get_url:
     url: https://raw.githubusercontent.com/mholt/caddy/v0.9.5/dist/init/linux-systemd/caddy.service
@@ -64,5 +72,9 @@
   systemd:
     name: caddy
     enabled: yes
-    state: reloaded
-  notify: restart caddy
+    daemon_reload: yes
+
+- name: start caddy service
+  systemd:
+    name: caddy
+    state: started

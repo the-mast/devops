@@ -1,5 +1,6 @@
 staging.{{ SITE_DOMAIN }} {
   root /var/www/staging.{{ SITE_DOMAIN }}
+  tls {{ TLS_EMAIL }}
 
   proxy / {% for host in STAGING_HOSTS %}{{ hostvars[host]['ansible_host'] }} {% endfor %} {
     transparent
@@ -8,6 +9,8 @@ staging.{{ SITE_DOMAIN }} {
 }
 
 {{ SITE_DOMAIN }}, www.{{ SITE_DOMAIN }} {
+  tls {{ TLS_EMAIL }}
+
   proxy / {% for host in PRODUCTION_HOSTS %}{{ hostvars[host]['ansible_host'] }} {% endfor %} {
     transparent
   }

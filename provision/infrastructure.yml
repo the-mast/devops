@@ -3,5 +3,6 @@
 - hosts: loadbalancer
   roles:
     - role: loadbalancer
+      TLS_EMAIL: 'the-mast@thoughtworks.com'
       SITE_DOMAIN: 'themastonline.com'
 
