@@ -3,6 +3,12 @@
   become: yes
 
   pre_tasks:
+    - name: common dependencies
+      apt: name={{ item }} state=latest
+      with_items:
+        - rsync
+        - zip
+
     - name: install wordpress dependencies
       apt: name={{ item }} state=latest
       with_items:
