@@ -57,6 +57,17 @@
         dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
         group: www-data
         owner: www-data
+      when: ansible_host != 'vagrant'
+
+    - name: add SSL settings for reverse proxy
+      blockinfile:
+        dest: "{{ wordpress_installs[0].path }}/wp-config.php"
+        insertbefore: "^// \\*\\* MySQL settings \\*\\* //"
+        block: |
+          define('FORCE_SSL_ADMIN', true);
+          if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
+            $_SERVER['HTTPS']='on';
+      when: ansible_host != 'vagrant'
 
   post_tasks:
     - name: restart apache
