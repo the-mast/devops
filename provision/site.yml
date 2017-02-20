@@ -2,6 +2,9 @@
 - hosts: all
   become: yes
 
+  vars_files:
+    - "./vars/{{ inventory_hostname }}.yml"
+
   pre_tasks:
     - name: common dependencies
       apt: name={{ item }} state=latest
@@ -18,6 +21,8 @@
         - libapache2-mod-php
         - php7.0-mysql
         - python-mysqldb
+        - php-curl
+        - curl
 
     - name: enable apache modules
       apache2_module: name={{ item }}
@@ -29,14 +34,29 @@
       file: path=/var/www/html/index.html state=absent
 
     - name: install database
-      mysql_db: name=wordpress state=present
+      mysql_db: name="{{ wordpress_installs[0].dbname }}" state=present
 
     - name: create user
       mysql_user:
-        name: wordpress
-        password: "{{ vars.wordpress_installs[0].dbpass }}"
-        priv: 'wordpress.*:ALL'
+        name: "{{ wordpress_installs[0].dbuser }}"
+        password: "{{ wordpress_installs[0].dbpass }}"
+        priv: "{{ wordpress_installs[0].dbname | trim }}.*:ALL"
         state: present
+
+    - name: ensure theme directory exists
+      file:
+        dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
+        state: directory
+      
+    - name: download && install default specified wordpress theme
+      unarchive:
+        src: "{{ wp_theme.url }}"
+        copy: no
+        remote_src: yes
+        extra_opts: ['--strip-components=1', '--show-stored-names']
+        dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
+        group: www-data
+        owner: www-data
 
   post_tasks:
     - name: restart apache
@@ -45,25 +65,3 @@
   roles:
     - role: tersmitten.wordpress
       notify: restart apache
-
-  vars:
-    wordpress_installs:
-      - name: wordpress
-        dbname: wordpress
-        dbuser: wordpress
-        dbpass: 'heCrE7*d2KEs'
-        dbhost: localhost
-        path: /var/www/html
-        url: http://localhost:8080
-        title: wordpress
-        admin_name: dev
-        admin_email: dev@localhost.localdomain
-        admin_password: 'dev.password'
-        themes:
-          - name: the-mast-theme
-            activate: true
-        plugins: []
-        users: {}
-        options: []
-        queries: []
-

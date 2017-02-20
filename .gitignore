@@ -1,2 +1,3 @@
 .vagrant/
-site.retry
+*.retry
+provision/roles/tersmitten.wordpress

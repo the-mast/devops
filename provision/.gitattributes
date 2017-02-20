@@ -1,3 +1,2 @@
 .gitattributes !filter !diff
 hosts.ini filter=git-crypt diff=git-crypt
-
