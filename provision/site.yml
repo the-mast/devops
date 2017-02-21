@@ -43,7 +43,7 @@
       dbuser: "{{ wordpress_installs[0].dbuser }}"
       dbpass: "{{ wordpress_installs[0].dbpass }}"
 
+    - role: webserver
+
     - role: tersmitten.wordpress
       notify: restart apache
-
-    - role: webserver
