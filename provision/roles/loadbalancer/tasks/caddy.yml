@@ -1,6 +1,6 @@
 ---
 - name: install caddy
-  shell: curl https://getcaddy.com | bash -s cors
+  shell: curl https://getcaddy.com | bash -s cors,ratelimit
   args:
     creates: /usr/local/bin/caddy
 
