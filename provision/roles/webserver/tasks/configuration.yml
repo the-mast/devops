@@ -1,8 +1,8 @@
 ---
 - name: allow overrides
   blockinfile: 
-    dest: /etc/apache2/000-default.conf
-    lineafter: "<VirtualHost \\*:80>"
+    dest: /etc/apache2/sites-enabled/000-default.conf
+    insertafter: "<VirtualHost \\*:80>"
     block: |
         <Directory /var/www/>
             AllowOverride All
