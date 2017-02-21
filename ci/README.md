@@ -25,12 +25,13 @@ Provision the server with the options above and execute the following.
 If successful, the DroneCI instance will be available at _http://[IP_ADDRESS]_.
 
 ```
-./bootstrap.sh [IP_ADDRESS] [SSH_KEY] [MACHINE_NAME]
+./bootstrap.sh [IP_ADDRESS] [SSH_KEY] [MACHINE_NAME] [REMOTE_SSH_KEY]
 ```
 
 + **IP ADDRESS**: the IP address of the provisioned machine.
 + **SSH_KEY**: path to the private key to connect to the server with.
 + **MACHINE_NAME**: a machine name for `docker-machine` to identify the server.
++ **REMOTE_SSH_KEY**: path to the private key to connect to the remote host server with.
 
 ## Secrets
 
