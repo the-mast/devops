@@ -1,78 +1,31 @@
 ---
-- hosts: all
+- hosts: "*:!loadbalancer"
   become: yes
 
   vars_files:
-    - "./vars/{{ inventory_hostname }}.yml"
+    - "./vars/{{ ansible_host | default('vagrant') }}.yml"
 
   pre_tasks:
+    - debug: msg="Configuring the following host - {{ ansible_host}}"
+
     - name: common dependencies
       apt: name={{ item }} state=latest
       with_items:
         - rsync
         - zip
 
-    - name: install wordpress dependencies
-      apt: name={{ item }} state=latest
-      with_items:
-        - mariadb-server
-        - php
-        - apache2
-        - libapache2-mod-php
-        - php7.0-mysql
-        - python-mysqldb
-        - php-curl
-        - curl
-
-    - name: enable apache modules
-      apache2_module: name={{ item }}
-      with_items:
-        - php7.0
-        - rewrite
-
-    - name: remove default index.html
-      file: path=/var/www/html/index.html state=absent
-
-    - name: install database
-      mysql_db: name="{{ wordpress_installs[0].dbname }}" state=present
-
-    - name: create user
-      mysql_user:
-        name: "{{ wordpress_installs[0].dbuser }}"
-        password: "{{ wordpress_installs[0].dbpass }}"
-        priv: "{{ wordpress_installs[0].dbname | trim }}.*:ALL"
-        state: present
-
-    - name: ensure theme directory exists
-      file:
-        dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
-        state: directory
-      
-    - name: download && install default specified wordpress theme
-      unarchive:
-        src: "{{ wp_theme.url }}"
-        copy: no
-        remote_src: yes
-        extra_opts: ['--strip-components=1', '--show-stored-names']
-        dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
-        group: www-data
-        owner: www-data
-      when: ansible_host != 'vagrant'
-
-    - name: add SSL settings for reverse proxy
-      blockinfile:
-        dest: "{{ wordpress_installs[0].path }}/wp-config.php"
-        insertbefore: "^// \\*\\* MySQL settings \\*\\* //"
-        block: |
-          define('FORCE_SSL_ADMIN', true);
-          if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
-            $_SERVER['HTTPS']='on';
-      when: ansible_host != 'vagrant'
-
-  post_tasks:
-    - name: restart apache
-      service: name=apache2 state=restarted
+    - name: download & install theme if not on vagrant box (local)
+      include: tasks/wp_theme.yml
+      when: ansible_host
 
   roles:
+    - role: database
+      dbhost: "{{ wordpress_installs[0].dbhost}}"
+      dbname: "{{ wordpress_installs[0].dbname }}"
+      dbuser: "{{ wordpress_installs[0].dbuser }}"
+      dbpass: "{{ wordpress_installs[0].dbpass }}"
+
+    - role: webserver
+
     - role: tersmitten.wordpress
       notify: restart apache

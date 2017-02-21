@@ -29,9 +29,10 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: $installAnsibleRoles
   config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "provision/site.yml"
+    ansible.galaxy_role_file = "provision/roles.txt"
   end
 
-  # # configure nodejs workspace
+  # configure nodejs workspace
   config.vm.provision "shell", inline: $installBuildEssentials
   config.vm.provision "shell", path: "provision/install_node.sh", privileged: false
 end

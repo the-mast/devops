@@ -1,0 +1,19 @@
+---
+- name: install wordpress dependencies
+  apt: name={{ item }} state=latest
+  with_items:
+    - php
+    - apache2
+    - libapache2-mod-php
+    - php-mysql
+    - php-curl
+    - curl
+
+- name: enable apache modules
+  apache2_module: name={{ item }}
+  with_items:
+    - php7.0
+    - rewrite
+
+- name: remove default index.html
+  file: path=/var/www/html/index.html state=absent

@@ -1,0 +1,5 @@
+---
+dbhost: "{{ wordpress_installs[0].dbhost}}"
+dbname: "{{ wordpress_installs[0].dbname }}"
+dbuser: "{{ wordpress_installs[0].dbuser }}"
+dbpass: "{{ wordpress_installs[0].dbpass }}"
