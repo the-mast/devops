@@ -1,12 +1,9 @@
-# Provision website
-# Usage: source env.sh && ansible-playbook playbooks/backup_wordpress.yml -i hosts.ini -l staging
-
 ---
 - hosts: "*:!loadbalancer"
   become: yes
 
   vars_files:
-    - "./vars/{{ inventory_hostname }}.yml"
+    - ./vars/vagrant.yml
 
   pre_tasks:
     - debug: msg="Configuring the following host - {{ ansible_host}}"
@@ -16,15 +13,6 @@
       with_items:
         - rsync
         - unzip
-
-    - name: check if wordpress theme directory already exists
-      stat:
-        path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wordpress_installs[0].themes[0].name }}"
-      register: theme_dir
-
-    - name: download & install theme if not there (local)
-      include: tasks/wp_theme.yml
-      when: !theme_dir.stat.exists
 
   post_tasks:
     - name: add SSL settings for reverse proxy
