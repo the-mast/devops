@@ -17,3 +17,6 @@
 
 - name: remove default index.html
   file: path=/var/www/html/index.html state=absent
+
+- name: configure apache
+  include: configuration.yml

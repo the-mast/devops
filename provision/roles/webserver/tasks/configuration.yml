@@ -1,0 +1,14 @@
+---
+- name: allow overrides
+  blockinfile: 
+    dest: /etc/apache2/000-default.conf
+    lineafter: "<VirtualHost \\*:80>"
+    block: |
+        <Directory /var/www/>
+            AllowOverride All
+        </Directory>
+
+- name: enable mode rewrite rules
+  copy:
+    dest: /var/www/html/.htaccess
+    src: htaccess
