@@ -1,3 +1,4 @@
 .vagrant/
 *.retry
 provision/roles/tersmitten.wordpress
+*.log
