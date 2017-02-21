@@ -1,4 +1,6 @@
 # playbook to to backup wordpress
+# From the provision/ directory, run the following command
+# source env.sh && ansible-playbook playbooks/backup_wordpress.yml -i hosts.ini -l [blue,green]
 ---
 - hosts: webservers
   vars:

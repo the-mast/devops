@@ -1,3 +1,6 @@
+# Provision website
+# Usage: source env.sh && ansible-playbook playbooks/backup_wordpress.yml -i hosts.ini -l staging
+
 ---
 - hosts: "*:!loadbalancer"
   become: yes
