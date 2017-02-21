@@ -4,7 +4,7 @@
     dest: /etc/apache2/sites-enabled/000-default.conf
     insertafter: "<VirtualHost \\*:80>"
     block: |
-        <Directory /var/www/>
+        <Directory /var/www/html>
             AllowOverride All
         </Directory>
 

@@ -13,7 +13,7 @@ staging.{{ SITE_DOMAIN }} {
 {{ SITE_DOMAIN }}, www.{{ SITE_DOMAIN }} {
   tls {{ TLS_EMAIL }}
 
-  ratelimit / 2 3 second
+  ratelimit / 7 10 second
 
   proxy / {% for host in PRODUCTION_HOSTS %}{{ hostvars[host]['ansible_host'] }} {% endfor %} {
     transparent
