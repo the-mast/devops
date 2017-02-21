@@ -12,7 +12,7 @@
       apt: name={{ item }} state=latest
       with_items:
         - rsync
-        - zip
+        - unzip
 
     - name: download & install theme if not on vagrant box (local)
       include: tasks/wp_theme.yml
