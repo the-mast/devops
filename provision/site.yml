@@ -44,6 +44,7 @@
       dbpass: "{{ wordpress_installs[0].dbpass }}"
 
     - role: webserver
+      install_fail2ban: yes
 
     - role: tersmitten.wordpress
       notify: restart apache

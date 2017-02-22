@@ -23,4 +23,4 @@
 
 - name: apply fail2ban plugin
   include: fail2ban.yml
-  when: inventory_hostname != None
+  when: install_fail2ban
