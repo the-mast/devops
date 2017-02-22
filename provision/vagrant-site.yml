@@ -14,16 +14,6 @@
         - rsync
         - unzip
 
-  post_tasks:
-    - name: add SSL settings for reverse proxy
-      blockinfile:
-        dest: "{{ wordpress_installs[0].path }}/wp-config.php"
-        insertbefore: "^// \\*\\* MySQL settings \\*\\* //"
-        block: |
-          define('FORCE_SSL_ADMIN', true);
-          if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
-          $_SERVER['HTTPS']='on';
-
   roles:
     - role: database
       dbhost: "{{ wordpress_installs[0].dbhost}}"
@@ -32,6 +22,7 @@
       dbpass: "{{ wordpress_installs[0].dbpass }}"
 
     - role: webserver
+      notify: restart apache
 
     - role: tersmitten.wordpress
       notify: restart apache
