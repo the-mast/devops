@@ -1,0 +1,11 @@
+Host default
+  HostName 127.0.0.1
+  User ubuntu
+  Port 2222
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/sett/Projects/mast/devops/.vagrant/machines/default/virtualbox/private_key
+  IdentitiesOnly yes
+  LogLevel FATAL
+
