@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.hostname = "loadbalancer.wordpress"
+
+  config.vm.network "private_network", ip: "192.168.33.40"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "1024"
+  end
+
+  config.vm.provision "file", source: "~/.ssh/the_mast_id_rsa", destination: "/home/ubuntu/the_mast_id_rsa"
+  config.vm.provision "file", source: "~/.ssh/the_mast_id_rsa.pub", destination: "/home/ubuntu/the_mast_id_rsa.pub"
+  config.vm.provision "shell", inline: "sudo cp /home/ubuntu/the_mast_id_rsa* /root/.ssh"
+  config.vm.provision "shell", inline: "sudo chmod 600 /root/.ssh/the_mast_id_rsa*"
+  config.vm.provision "shell", inline: "sudo cat /root/.ssh/the_mast_id_rsa.pub >/root/.ssh/authorized_keys"
+  config.vm.provision "shell", inline: "sudo chmod 600 /root/.ssh/authorized_keys"
+  config.vm.provision "shell", inline: "rm -f /home/ubuntu/the_mast_id_rsa*"
+
+end
