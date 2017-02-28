@@ -1,0 +1,13 @@
+---
+- name: ensure importer is installed
+  command: "wp-cli plugin install wordpress-importer --activate --path={{ wordpress_installs[0].path }}"
+  become: www-data
+
+- name: copy data
+  copy:
+    dest: /tmp/fixtures.xml
+    src: files/fixtures.xml
+
+- name: import into wordpress
+  command: "wp-cli import /tmp/fixtures.xml --authors=skip --path={{ wordpress_installs[0].path }}"
+  become: www-data

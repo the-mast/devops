@@ -24,3 +24,12 @@
 - name: apply fail2ban plugin
   include: fail2ban.yml
   when: install_fail2ban
+
+- name: set permissions
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner | default('www-data') }}"
+    group: "{{ item.group | default(item.owner) | default('www-data') }}"
+    mode: 0755
+    recurse: true
+  with_items: "{{ wordpress_installs }}"
