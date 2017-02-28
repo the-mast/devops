@@ -21,7 +21,7 @@
       stat:
         path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wordpress_installs[0].themes[0].name }}"
       register: theme_dir
-
+      
     - name: download & install theme if not there (local)
       include: tasks/wp_theme.yml
       when: ! theme_dir.stat.exists
@@ -47,8 +47,8 @@
       dbuser: "{{ wordpress_installs[0].dbuser }}"
       dbpass: "{{ wordpress_installs[0].dbpass }}"
 
-    - role: webserver
-      install_fail2ban: yes
-
     - role: tersmitten.wordpress
       notify: restart apache
+
+    - role: webserver
+      install_fail2ban: yes
