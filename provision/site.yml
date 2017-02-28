@@ -40,6 +40,15 @@
           if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
           $_SERVER['HTTPS']='on';
 
+  post_tasks:
+    - name: import fixtures data
+      include: tasks/import_fixtures.yml
+      when: load_fixtures
+      tags: wip
+        
+    - name: restart apache
+      service: name=apache2 state=restarted
+
   roles:
     - role: database
       dbhost: "{{ wordpress_installs[0].dbhost}}"
