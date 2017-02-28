@@ -24,7 +24,9 @@
 
     - name: download & install theme if not there (local)
       include: tasks/wp_theme.yml
-      when: ! theme_dir.stat.exists
+      
+    - name: set server timezone
+      timezone:name: Africa/Lusaka
 
   post_tasks:
     - name: add SSL settings for reverse proxy
