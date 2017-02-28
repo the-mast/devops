@@ -24,7 +24,7 @@
       
     - name: download & install theme if not there (local)
       include: tasks/wp_theme.yml
-      when: ! theme_dir.stat.exists
+      when: not theme_dir.stat.exists
       
     # - name: set server timezone
     #   timezone:

@@ -4,11 +4,18 @@
     dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
     state: directory
     
-- name: download && install default specified wordpress theme
-  unarchive:
-    src: "{{ wp_theme.url }}"
-    remote_src: yes
-    extra_opts: ['--strip-components=1', '--show-stored-names']
-    dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
-    group: www-data
-    owner: www-data
+# - name: download && install default specified wordpress theme
+#   unarchive:
+#     src: "{{ wp_theme.url }}"
+#     copy: no
+#     remote_src: yes
+#     extra_opts: ['--strip-components=1', '--show-stored-names']
+#     dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
+#     group: www-data
+#     owner: www-data
+
+# TODO: replace with above download step when git tag releases work
+- name: place a empty style.css to fool tersmitten.wordpress role
+  file:
+    path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}/style.css"
+    state: touch
