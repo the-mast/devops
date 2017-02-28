@@ -6,7 +6,7 @@
   become: yes
 
   vars_files:
-    - "./vars/{{ inventory_hostname }}.yml"
+    - "./vars/{{ 'production' if 'production' in group_names else 'staging' }}.yml"
 
   pre_tasks:
     - debug: msg="Configuring the following host - {{ ansible_host}}"
@@ -24,9 +24,11 @@
 
     - name: download & install theme if not there (local)
       include: tasks/wp_theme.yml
+      when: ! theme_dir.stat.exists
       
-    - name: set server timezone
-      timezone:name: Africa/Lusaka
+    # - name: set server timezone
+    #   timezone:
+    #     name: Africa/Lusaka
 
   post_tasks:
     - name: add SSL settings for reverse proxy
