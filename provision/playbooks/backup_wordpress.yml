@@ -2,7 +2,7 @@
 # From the provision/ directory, run the following command
 # source env.sh && ansible-playbook playbooks/backup_wordpress.yml -i hosts.ini -l [blue,green]
 ---
-- hosts: webservers
+- hosts: production
   vars:
     aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
     aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
