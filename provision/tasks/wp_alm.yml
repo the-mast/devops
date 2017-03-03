@@ -1,0 +1,13 @@
+---
+- name: ensure ajax load more is installed
+  command: "wp-cli plugin install ajax-load-more --activate --path={{ wordpress_installs[0].path }}"
+  sudo_user: www-data
+
+- name: copy sql file
+  copy:
+    dest: /tmp/wp_alm.sql
+    src: files/wp_alm.sql
+
+- name: import load more repeater template into wordpress
+  command: "wp-cli db import /tmp/wp_alm.sql --path={{ wordpress_installs[0].path }}"
+  sudo_user: www-data
