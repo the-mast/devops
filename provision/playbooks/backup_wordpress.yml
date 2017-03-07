@@ -2,7 +2,8 @@
 # From the provision/ directory, run the following command
 # source env.sh && ansible-playbook playbooks/backup_wordpress.yml -i hosts.ini -l [blue,green]
 ---
-- hosts: production
+- hosts: webservers
+
   vars:
     aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
     aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
@@ -12,84 +13,5 @@
     wp_options_backup_filename: "{{ ansible_date_time.epoch }}-wp_options_backup.sql.bz2"
 
   tasks:
-    - name: install ansible dependencies
-      apt: name={{ item }} state=present
-      with_items:
-        - python-boto
-        - python-bz2file
-
-    - name: compress current wordpress site
-      shell: tar -cjvf /tmp/{{ site_backup_filename }} /var/www/html
-      args:
-        creates: /tmp/{{ site_backup_filename }}
-
-    - name: send site backup to S3
-      s3:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-        bucket: the-mast
-        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-site_backup.tar.bz2"
-        mode: put
-        region: eu-west-1
-        src: /tmp/{{ site_backup_filename }}
-
-    - name: send site backup to S3 in last-release
-      s3:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-        bucket: the-mast
-        object: "/last-release/site_backup-{{ansible_hostname}}.tar.bz2"
-        mode: put
-        region: eu-west-1
-        src: /tmp/{{ site_backup_filename }}
-
-    - name: dump wp_options
-      shell: mysqldump wordpress wp_options | bzip2 >/tmp/{{ wp_options_backup_filename }} 
-      args:
-        creates: /tmp/{{ wp_options_backup_filename }}
-
-    - name: send options backup to S3
-      s3:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-        bucket: the-mast
-        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-wp_options_backup-{{ansible_hostname}}.tar.bz2"
-        mode: put
-        region: eu-west-1
-        src: /tmp/{{ wp_options_backup_filename }}
-
-    - name: send options backup to S3 in last-release
-      s3:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-        bucket: the-mast
-        object: "/last-release/wp_options_backup-{{ansible_hostname}}.tar.bz2"
-        mode: put
-        region: eu-west-1
-        src: /tmp/{{ wp_options_backup_filename }}
-
-    - name: dump sql database
-      mysql_db:
-        state: dump
-        name: all
-        target: /tmp/{{ sql_backup_filename }}
-
-    - name: send sql backup to S3
-      s3:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-        bucket: the-mast
-        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-sql_backup.bz2"
-        mode: put
-        region: eu-west-1
-        src: /tmp/{{ sql_backup_filename }}
-
-    - name: send sql backup to S3 last-release
-      s3:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-        bucket: the-mast
-        object: "/last-release/sql_backup-{{ansible_hostname}}.bz2"
-        mode: put
-        region: eu-west-1
-        src: /tmp/{{ sql_backup_filename }}
+    - name: backup
+      include: ../tasks/backup.yml
