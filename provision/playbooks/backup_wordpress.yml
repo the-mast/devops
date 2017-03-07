@@ -11,6 +11,7 @@
     site_backup_filename: "{{ ansible_date_time.epoch }}-site_backup.tar.bz2"
     sql_backup_filename: "{{ ansible_date_time.epoch }}-sql_backup.sql.bz2"
     wp_options_backup_filename: "{{ ansible_date_time.epoch }}-wp_options_backup.sql.bz2"
+    wp_uploads_backup_filename: "{{ ansible_date_time.epoch }}-wp_uploads_backup.sql.bz2"
 
   tasks:
     - name: backup
