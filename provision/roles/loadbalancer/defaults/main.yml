@@ -1,4 +1,4 @@
 SITE_DOMAIN: themastonline.com
 TLS_EMAIL: 
-PRODUCTION_HOSTS: "{{ groups['production'] }}"
-STAGING_HOSTS: "{{ groups['staging'] }}"
+PRODUCTION_HOSTS: "{{ groups[lookup('env','SWITCH_TO')] }}"
+STAGING_HOSTS: "{{ groups[lookup('env','SWITCH_FROM')] }}"
