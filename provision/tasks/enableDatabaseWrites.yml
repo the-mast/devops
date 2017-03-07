@@ -1,0 +1,2 @@
+- name: grant dbuser all privileges
+  shell: mysql --execute="GRANT ALL ON *.* TO '{{wordpress_installs[0].dbuser}}'@'{{wordpress_installs[0].dbhost}}' ;FLUSH PRIVILEGES;"

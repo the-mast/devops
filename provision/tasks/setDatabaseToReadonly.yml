@@ -1,0 +1,5 @@
+- name: remove all privileges from dbuser
+  shell: mysql --execute="REVOKE ALL PRIVILEGES, GRANT OPTION FROM '{{wordpress_installs[0].dbuser}}'@'{{wordpress_installs[0].dbhost}}';"
+
+- name: grant dbuser select privileges
+  shell: mysql --execute="GRANT SELECT ON *.* TO '{{wordpress_installs[0].dbuser}}'@'{{wordpress_installs[0].dbhost}}' ;FLUSH PRIVILEGES;"
