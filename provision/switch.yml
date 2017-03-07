@@ -1,0 +1,51 @@
+#switching
+#
+---
+- hosts: webservers
+
+  vars:
+    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+    backup_prefix: "/{{ ansible_date_time.year }}/{{ ansible_date_time.month }}/{{ ansible_date_time.day }}"
+    site_backup_filename: "{{ ansible_date_time.epoch }}-site_backup.tar.bz2"
+    sql_backup_filename: "{{ ansible_date_time.epoch }}-sql_backup.sql.bz2"
+    wp_options_backup_filename: "{{ ansible_date_time.epoch }}-wp_options_backup.sql.bz2"
+
+  vars_files:
+    - "./vars/{{ ansible_hostname }}.yml"
+
+  pre_tasks:
+    - name: set the database to readonly
+      include: tasks/setDatabaseToReadonly.yml
+  tasks:
+    - name: backup wordpress
+      include: tasks/backup.yml
+
+    - name: add wordpress backup to latest release
+      include: tasks/copy_backup_to_latest_release.yml
+
+    - name: copy data from s3 latest release data
+      include: tasks/copy_latest_release_data.yml
+      when: ansible_hostname == lookup('env', 'SWITCH_TO')
+
+    - name: import the data
+      include: tasks/import_prod_db.yml
+      when: ansible_hostname == lookup('env', 'SWITCH_TO')
+
+    - name: update wp_options
+      shell: mysql -D {{wordpress_installs[0].dbname}} --execute="update wp_options set option_value='{{wordpress_installs[0].url}}' where option_name in ('siteurl','home');"
+
+- hosts: loadbalancer
+  roles:
+    - role: loadbalancer
+      TLS_EMAIL: 'the-mast@thoughtworks.com'
+      SITE_DOMAIN: 'themastonline.com'
+
+- hosts: webservers
+
+  vars_files:
+    - "./vars/{{ ansible_hostname }}.yml"
+
+  tasks:
+    - name: grant all privileges to the database user
+      include: tasks/enableDatabaseWrites.yml
