@@ -26,9 +26,8 @@
       include: tasks/wp_theme.yml
       when: not theme_dir.stat.exists
       
-    # - name: set server timezone
-    #   timezone:
-    #     name: Africa/Lusaka
+    - name: set server timezone
+       shell: datetimectl set-timezone Africa/Lusaka
 
   post_tasks:
     - name: add SSL settings for reverse proxy
