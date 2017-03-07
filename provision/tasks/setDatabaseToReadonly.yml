@@ -1,0 +1,6 @@
+---
+- name: revoke all database access
+  shell: mysql --execute="REVOKE ALL PRIVILEGES, GRANT OPTION FROM '{{wordpress_installs[0].dbuser}}'@'{{wordpress_installs[0].dbhost}}' ;FLUSH PRIVILEGES;"
+
+- name: give back read rights
+  shell: mysql --execute="GRANT SELECT ON *.* TO '{{wordpress_installs[0].dbuser}}'@'{{wordpress_installs[0].dbhost}}' ;FLUSH PRIVILEGES;"
