@@ -6,7 +6,7 @@
   become: yes
 
   vars_files:
-    - "./vars/{{ 'production' if 'production' in group_names else 'staging' }}.yml"
+    - "./vars/{{ ansible_hostname}}.yml"
 
   pre_tasks:
     - debug: msg="Configuring the following host - {{ ansible_host}}"
@@ -48,7 +48,6 @@
         
     - name: restart apache
       service: name=apache2 state=restarted
-
   roles:
     - role: database
       dbhost: "{{ wordpress_installs[0].dbhost}}"
@@ -56,8 +55,11 @@
       dbuser: "{{ wordpress_installs[0].dbuser }}"
       dbpass: "{{ wordpress_installs[0].dbpass }}"
 
+    - role: webserver
+
     - role: tersmitten.wordpress
       notify: restart apache
 
-    - role: webserver
+    - role: wp_filters
       install_fail2ban: yes
+      notify: restart apache
