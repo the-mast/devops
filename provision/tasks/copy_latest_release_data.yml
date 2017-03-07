@@ -1,0 +1,25 @@
+  - name: get database dump
+    s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      bucket: the-mast
+      object: "/last-release/sql_backup-{{lookup('env', 'SWITCH_FROM') }}.bz2"
+      mode: get
+      region: eu-west-1
+      dest: /tmp/datadump.sql.bz2
+
+  - name: unzip the datadump
+    shell: bzip2 -d /tmp/datadump.sql.bz2
+
+  - name: get wp_options
+    s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      bucket: the-mast
+      object: "/last-release/wp_options_backup-{{ansible_hostname}}.sql.bz2"
+      mode: get
+      region: eu-west-1
+      dest: /tmp/wp_options.sql.bz2
+
+  - name: unzip wp_options
+    shell: bzip2 -d /tmp/wp_options.sql.bz2

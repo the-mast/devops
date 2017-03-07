@@ -1,0 +1,9 @@
+- name: import the prod data to staging 
+  shell: mysql -D {{wordpress_installs[0].dbname}} </tmp/datadump.sql
+
+- name: apply staging config 
+  shell: mysql -D {{wordpress_installs[0].dbname}} </tmp/wp_options.sql
+
+
+- name: clean dump files
+  shell: rm -f /tmp/*sql.bz2 /tmp/datadump.sql /tmp/wp_options.sql
