@@ -29,7 +29,7 @@
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       bucket: the-mast
-      object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-wp_options_backup-{{ansible_hostname}}.tar.bz2"
+      object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-wp_options_backup-{{ansible_hostname}}.sql.bz2"
       mode: put
       region: eu-west-1
       src: /tmp/{{ wp_options_backup_filename }}
@@ -45,7 +45,7 @@
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       bucket: the-mast
-      object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-sql_backup.bz2"
+      object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-sql_backup.sql.bz2"
       mode: put
       region: eu-west-1
       src: /tmp/{{ sql_backup_filename }}
