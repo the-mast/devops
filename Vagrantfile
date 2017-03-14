@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.network "forwarded_port", guest: 80, host: 8080, autocorrect: true
-  config.vm.synced_folder "../presson-theme/dist", "/var/www/html/wp-content/themes/mast-theme"
+  config.vm.synced_folder "../presson-theme/dist", "/var/www/html/wp-content/themes/presson-theme"
 
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
