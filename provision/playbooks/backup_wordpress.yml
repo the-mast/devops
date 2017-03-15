@@ -110,3 +110,18 @@
       file:
           state: absent
           path: "/tmp/{{ sql_backup_filename }}"
+  
+    - name: compress current wordpress theme
+      shell: tar -cjvf /tmp/presson-theme.tar.bz2 /var/www/html/wp-content/themes/presson-theme
+      args:
+        creates: /tmp/presson-theme.tar.bz2
+  
+    - name: send presson-theme to s3 last-release
+      s3:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        bucket: the-mast
+        object: "/last-release/presson-theme-{{ansible_hostname}}.tar.bz2"
+        mode: put
+        region: eu-west-1
+        src: /tmp/presson-theme.tar.bz2
