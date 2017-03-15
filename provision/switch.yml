@@ -1,29 +1,6 @@
 #switching
 #
 ---
-- hosts: webservers
-
-  vars:
-    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
-    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
-    backup_prefix: "/{{ ansible_date_time.year }}/{{ ansible_date_time.month }}/{{ ansible_date_time.day }}"
-    site_backup_filename: "{{ ansible_date_time.epoch }}-site_backup.tar.bz2"
-    sql_backup_filename: "{{ ansible_date_time.epoch }}-sql_backup.sql.bz2"
-    wp_options_backup_filename: "{{ ansible_date_time.epoch }}-wp_options_backup.sql.bz2"
-    wp_uploads_backup_filename: "{{ ansible_date_time.epoch }}-wp_uploads_backup.sql.bz2"
-
-  vars_files:
-    - "./vars/{{ ansible_hostname }}.yml"
-
-  tasks:
-    - name: copy data from s3 latest release data
-      include: tasks/copy_latest_release_data.yml
-      when: ansible_hostname == lookup('env', 'SWITCH_TO')
-
-    - name: import the data
-      include: tasks/import_prod_db.yml
-      when: ansible_hostname == lookup('env', 'SWITCH_TO')
-
 - hosts: loadbalancer
   roles:
     - role: loadbalancer
