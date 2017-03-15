@@ -5,4 +5,4 @@
 
   tasks:
     - name: grant all privileges to the database user
-      include: tasks/enableDatabaseWrites.yml
+      include: ../tasks/enableDatabaseWrites.yml
