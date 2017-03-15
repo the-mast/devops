@@ -26,4 +26,4 @@
 - name: delete temporary theme backup file
   file:
   state: absent
-  path: "/tmp/theme.tar.bz2"
+  path: "/tmp/presson-theme.tar.bz2"
