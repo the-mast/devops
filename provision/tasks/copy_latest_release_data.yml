@@ -16,10 +16,8 @@
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       bucket: the-mast
-      object: "/last-release/uploads_backup-{{switch_from}}.tar.bz2"
+      object: "/last-release/site_uploads_backup-{{switch_from}}.tar.bz2"
       mode: get
       region: eu-west-1
       dest: /tmp/uploads.tar.bz2
 
-  - name: unzip uploads
-    shell: cd /; tar -xjvf /tmp/uploads.tar.bz2
