@@ -19,6 +19,21 @@
       region: eu-west-1
       src: /tmp/{{ site_backup_filename }}
 
+  - name: compress current wordpress uploads
+    shell: tar -cjvf /tmp/{{ wp_uploads_backup_filename}} /var/www/html/wp-content/uploads
+    args:
+      creates: /tmp/{{ wp_uploads_backup_filename }}
+
+  - name: send site backup to S3
+    s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      bucket: the-mast
+      object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-site_uploads_backup.tar.bz2"
+      mode: put
+      region: eu-west-1
+      src: /tmp/{{ wp_uploads_backup_filename }}
+
   - name: dump sql database
     mysql_db:
       state: dump
