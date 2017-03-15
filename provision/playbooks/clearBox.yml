@@ -1,0 +1,24 @@
+- hosts: production
+
+  vars:
+    switch_from : "{{ 'green' if ansible_hostname == 'blue' else 'blue'}}"
+    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+
+  vars_files:
+    - "../vars/{{ 'production' if 'production' in group_names else 'staging' }}.yml"
+
+  tasks:
+    - name: delete website
+      file:
+          state: absent
+          path: "/var/www/html/"
+
+    - name: copy data from s3 latest release data
+      include: ../tasks/copy_latest_release_data.yml
+
+    - name: import the data
+      include: ../tasks/import_prod_db.yml
+
+    - name: put the database into readonly again
+      include: ../tasks/setDatabaseToReadonly.yml
