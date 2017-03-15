@@ -15,3 +15,17 @@
   tasks:
     - name: backup
       include: ../tasks/backup.yml
+
+  post_tasks:
+    - name: delete temporary site backup file
+      file:
+          state: absent
+          path: "{{ site_backup_filename }}"
+    - name: delete temporary site uploads backup file
+      file:
+          state: absent
+          path: "{{ wp_uploads_backup_filename }}"
+    - name: delete temporary database backup file
+      file:
+          state: absent
+          path: "{{ sql_backup_filename }}"
