@@ -8,15 +8,15 @@
       region: eu-west-1
       src: /tmp/{{ site_backup_filename }}
 
-  - name: send options backup to S3 in last-release
+  - name: send site uploads backup to S3 in last-release
     s3:
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       bucket: the-mast
-      object: "/last-release/wp_options_backup-{{ansible_hostname}}.sql.bz2"
+      object: "/last-release/site_uploads_backup-{{ansible_hostname}}.tar.bz2"
       mode: put
       region: eu-west-1
-      src: /tmp/{{ wp_options_backup_filename }}
+      src: /tmp/{{ wp_uploads_backup_filename }}
 
   - name: send sql backup to S3 last-release
     s3:
