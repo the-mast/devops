@@ -2,6 +2,7 @@
 
   vars:
     prod_host : "{{ 'green' if ansible_hostname == 'blue' else 'blue'}}"
+    staging_host : "{{ 'blue' if ansible_hostname == 'blue' else 'green'}}"
     aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
     aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
 
