@@ -1,6 +1,6 @@
 ---
 - name: install wordpress dependencies
-  apt: name={{ item }} state=latest
+  apt: name={{ item }} state=latest update_cache=yes
   with_items:
     - php
     - apache2

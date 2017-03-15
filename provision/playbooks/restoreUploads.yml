@@ -1,8 +1,9 @@
-- hosts: production
-  - name: unzip uploads
-    shell: cd /; tar -xjvf /tmp/uploads.tar.bz2
+- hosts: staging
+  tasks:
+    - name: unzip uploads
+      shell: cd /; tar -xjvf /tmp/uploads.tar.bz2
 
     - name: delete temporary upload Daarchivebackup file
       file:
-          state: absent
-          path: "/tmp/uploads.tar.bz2"
+        state: absent
+        path: "/tmp/uploads.tar.bz2"

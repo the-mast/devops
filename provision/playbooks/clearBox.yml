@@ -1,12 +1,12 @@
-- hosts: production
+- hosts: staging
 
   vars:
-    switch_from : "{{ 'green' if ansible_hostname == 'blue' else 'blue'}}"
+    prod_host : "{{ 'green' if ansible_hostname == 'blue' else 'blue'}}"
     aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
     aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
 
   vars_files:
-    - "../vars/{{ 'production' if 'production' in group_names else 'staging' }}.yml"
+    - "../vars/production.yml"
 
   tasks:
     - name: delete website

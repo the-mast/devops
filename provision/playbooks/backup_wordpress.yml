@@ -49,7 +49,7 @@
       args:
         creates: /tmp/{{ wp_uploads_backup_filename }}
   
-    - name: send site backup to S3
+    - name: send site uploads backup to S3
       s3:
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
