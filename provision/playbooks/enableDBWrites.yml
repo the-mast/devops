@@ -1,0 +1,8 @@
+- hosts: webservers
+
+  vars_files:
+    - "./vars/{{ 'production' if 'production' in group_names else 'staging' }}.yml"
+
+  tasks:
+    - name: grant all privileges to the database user
+      include: tasks/enableDatabaseWrites.yml
