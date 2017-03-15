@@ -1,0 +1,4 @@
+- hosts: webservers
+  tasks:
+    - name: set the database to readonly
+      include: ../tasks/setDatabaseToReadonly.yml
