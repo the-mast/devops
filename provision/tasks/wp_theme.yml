@@ -21,7 +21,7 @@
 #    state: touch
 
 - name: install theme
-  shell: cd /; tar -xjvf /tmp/theme.tar.bz2
+  shell: cd /; tar -xjvf /tmp/presson-theme.tar.bz2
 
 - name: delete temporary theme backup file
   file:
