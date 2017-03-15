@@ -1,6 +1,16 @@
 #switching
 #
 ---
+- hosts: production
+  vars:
+    siteurl: "{{ 'https://www.themastonline.com' if 'production' in group_names else 'https://staging.themastonline.com' }}"
+  tasks:
+    - name: adjust siteurl appropriately
+      command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "siteurl" "{{siteurl}}"
+
+    - name: adjust home appropriately
+      command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "home" "{{siteurl}}"
+
 - hosts: loadbalancer
   roles:
     - role: loadbalancer
