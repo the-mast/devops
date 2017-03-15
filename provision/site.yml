@@ -5,6 +5,8 @@
 - hosts: "*:!loadbalancer"
   become: yes
 
+  vars:
+    siteurl: "{{ 'https://www.themastonline.com' if 'production' in group_names else 'https://staging.themastonline.com' }}"
   vars_files:
     - "./vars/production.yml"
 
@@ -40,6 +42,12 @@
       include: tasks/import_fixtures.yml
       when: load_fixtures
       tags: wip
+
+    - name: adjust siteurl appropriately
+      command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "siteurl" "{{siteurl}}"
+
+    - name: adjust home appropriately
+      command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "home" "{{siteurl}}"
         
     - name: restart apache
       service: name=apache2 state=restarted

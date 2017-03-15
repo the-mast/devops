@@ -4,6 +4,10 @@
 - hosts: production
   vars:
     siteurl: "{{ 'https://www.themastonline.com' if 'production' in group_names else 'https://staging.themastonline.com' }}"
+
+  vars_files:
+    - "vars/production.yml"
+
   tasks:
     - name: adjust siteurl appropriately
       command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "siteurl" "{{siteurl}}"
