@@ -6,7 +6,7 @@
   become: yes
 
   vars_files:
-    - "./vars/{{ 'production' if 'production' in group_names else 'staging' }}.yml"
+    - "./vars/production.yml"
 
   pre_tasks:
     - debug: msg="Configuring the following host - {{ ansible_host}}"
