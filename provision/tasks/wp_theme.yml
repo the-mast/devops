@@ -15,7 +15,15 @@
 #     owner: www-data
 
 # TODO: replace with above download step when git tag releases work
-- name: place a empty style.css to fool tersmitten.wordpress role
+#- name: place a empty style.css to fool tersmitten.wordpress role
+#  file:
+#    path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}/style.css"
+#    state: touch
+
+- name: install theme
+  shell: cd /; tar -xjvf /tmp/theme.tar.bz2
+
+- name: delete temporary theme backup file
   file:
-    path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}/style.css"
-    state: touch
+  state: absent
+  path: "/tmp/theme.tar.bz2"
