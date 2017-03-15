@@ -6,7 +6,7 @@
   become: yes
 
   vars_files:
-    - "./vars/{{ ansible_hostname}}.yml"
+    - "./vars/{{ 'production' if 'production' in group_names else 'staging' }}.yml"
 
   pre_tasks:
     - debug: msg="Configuring the following host - {{ ansible_host}}"
@@ -26,9 +26,6 @@
       include: tasks/wp_theme.yml
       when: not theme_dir.stat.exists
       
-    - name: set server timezone
-       shell: datetimectl set-timezone Africa/Lusaka
-
   post_tasks:
     - name: add SSL settings for reverse proxy
       blockinfile:
@@ -39,7 +36,6 @@
           if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
           $_SERVER['HTTPS']='on';
 
-  post_tasks:
     - name: import fixtures data
       include: tasks/import_fixtures.yml
       when: load_fixtures
