@@ -1,15 +1,15 @@
 - hosts: staging
 
   vars:
-    prod_host : "{{ 'green' if ansible_hostname == 'blue' else 'blue'}}"
-    staging_host : "{{ 'blue' if ansible_hostname == 'blue' else 'green'}}"
+    data_env : production
     aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
     aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
 
   vars_files:
-    - "../vars/production.yml"
+    - "../vars/webserver.yml"
 
   tasks:
+    - debug: msg="data_env {{data_env}}"
     - name: delete website
       file:
           state: absent
