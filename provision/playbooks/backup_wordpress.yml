@@ -11,6 +11,7 @@
     site_backup_filename: "{{ ansible_date_time.epoch }}-site_backup.tar.bz2"
     sql_backup_filename: "{{ ansible_date_time.epoch }}-sql_backup.sql.bz2"
     wp_uploads_backup_filename: "{{ ansible_date_time.epoch }}-wp_uploads_backup.tar.bz2"
+    backup_postfix: "{{ 'production' if 'production' in group_names else 'staging'}}"
 
   tasks:
     - name: install ansible dependencies
@@ -39,7 +40,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "/last-release/site_backup-{{ansible_hostname}}.tar.bz2"
+        object: "/last-release/site_backup-{{backup_postfix}}.tar.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ site_backup_filename }}
@@ -64,7 +65,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "/last-release/site_uploads_backup-{{ansible_hostname}}.tar.bz2"
+        object: "/last-release/site_uploads_backup-{{backup_postfix}}.tar.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ wp_uploads_backup_filename }}
@@ -90,7 +91,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "/last-release/sql_backup-{{ansible_hostname}}.bz2"
+        object: "/last-release/sql_backup-{{backup_postfix}}.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ sql_backup_filename }}
@@ -121,7 +122,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "/last-release/presson-theme-{{ansible_hostname}}.tar.bz2"
+        object: "/last-release/presson-theme-{{backup_postfix}}.tar.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/presson-theme.tar.bz2
