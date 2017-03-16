@@ -3,7 +3,7 @@
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       bucket: the-mast
-      object: "/last-release/sql_backup-{{prod_host}}.bz2"
+      object: "/last-release/sql_backup-{{data_env}}.bz2"
       mode: get
       region: eu-west-1
       dest: /tmp/datadump.sql.bz2
@@ -16,7 +16,7 @@
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       bucket: the-mast
-      object: "/last-release/site_uploads_backup-{{prod_host}}.tar.bz2"
+      object: "/last-release/site_uploads_backup-{{data_env}}.tar.bz2"
       mode: get
       region: eu-west-1
       dest: /tmp/uploads.tar.bz2
@@ -26,7 +26,7 @@
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       bucket: the-mast
-      object: "/last-release/presson-theme-{{staging_host}}.tar.bz2"
+      object: "/last-release/presson-theme-staging.tar.bz2"
       mode: get
       region: eu-west-1
       dest: /tmp/presson-theme.tar.bz2
