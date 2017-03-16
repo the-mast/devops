@@ -1,0 +1,4 @@
+
+- name: apply fail2ban plugin
+  include: fail2ban.yml
+  when: install_fail2ban
