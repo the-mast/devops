@@ -22,10 +22,6 @@
 - name: configure apache
   include: configuration.yml
 
-- name: apply fail2ban plugin
-  include: fail2ban.yml
-  when: install_fail2ban
-
 - name: set permissions
   file:
     path: "{{ item.path }}"

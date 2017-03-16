@@ -5,6 +5,9 @@
 - hosts: "*:!loadbalancer"
   become: yes
 
+  vars:
+    install_fail2ban: true
+
   vars_files:
     - "./vars/webserver.yml"
 
@@ -56,5 +59,4 @@
       notify: restart apache
 
     - role: wp_filters
-      install_fail2ban: yes
       notify: restart apache
