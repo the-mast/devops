@@ -8,6 +8,10 @@ staging.{{ SITE_DOMAIN }} {
     transparent
     except /robots.txt
   }
+
+  gzip {
+  	level 5
+  }
 }
 
 {{ SITE_DOMAIN }}, www.{{ SITE_DOMAIN }} {
@@ -17,5 +21,9 @@ staging.{{ SITE_DOMAIN }} {
 
   proxy / {% for host in PRODUCTION_HOSTS %}{{ hostvars[host]['ansible_host'] }} {% endfor %} {
     transparent
+  }
+
+  gzip {
+  	level 5
   }
 }
