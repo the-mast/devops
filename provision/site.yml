@@ -20,6 +20,10 @@
         - rsync
         - unzip
 
+    - name: clear the box
+      include: tasks/clear_box.yml
+      when: clear_box
+
     - name: check if wordpress theme directory already exists
       stat:
         path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wordpress_installs[0].themes[0].name }}"
@@ -30,6 +34,11 @@
       when: not theme_dir.stat.exists
       
   post_tasks:
+    - name: restore_uploads
+      include: tasks/restore_uploads.yml
+
+    - name: adjust urls
+      include: tasks/adjust_urls.yml
     - name: add SSL settings for reverse proxy
       blockinfile:
         dest: "{{ wordpress_installs[0].path }}/wp-config.php"
