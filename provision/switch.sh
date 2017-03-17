@@ -13,31 +13,39 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-ansible-playbook -v playbooks/clearBox.yml -i hosts.ini -l production
+ansible-playbook -v playbooks/clearBox.yml \
+    -i hosts.ini\
+    -l staging\
+    --extra-vars "data_env=production"
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
 fi
 
-ansible-playbook -v site.yml -i hosts.ini -l production
+ansible-playbook -v site.yml\
+    -i hosts.ini\
+    -l staging
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
 fi
 
-ansible-playbook -v playbooks/restoreUploads.yml -i hosts.ini -l production
+ansible-playbook -v playbooks/restoreUploads.yml\
+    -i hosts.ini\
+    -l staging
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
 fi
 
-ansible-playbook -v playbooks/enableDBWrites.yml -i hosts.ini
+ansible-playbook -v playbooks/enableDBWrites.yml\
+    -i hosts.ini
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
 fi
 
-ansible-playbook -v switch.yml -i hosts.ini -l production
+ansible-playbook -v switch.yml -i hosts.ini
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
