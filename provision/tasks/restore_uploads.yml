@@ -1,0 +1,14 @@
+- name: check if uploads file exists
+  stat:
+    path: /tmp/uploads.tar.bz2
+  register: uploads_file
+
+- name: unzip uploads
+  shell: cd /; tar -xjvf /tmp/uploads.tar.bz2
+  when: uploads_file.stat.exists
+
+- name: delete temporary upload Daarchivebackup file
+  file:
+    state: absent
+    path: "/tmp/uploads.tar.bz2"
+  when: uploads_file.stat.exists
