@@ -1,0 +1,5 @@
+add backups and restore of upload directories
+call the add_drone.... script
+restore the staging database to the new colour
+restore staging website to new colour
+restore db passwords
