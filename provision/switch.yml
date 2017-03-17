@@ -1,7 +1,7 @@
 #switching
 #
 ---
-- hosts: production
+- hosts: webservers
   vars_files:
     - "vars/webserver.yml"
 
