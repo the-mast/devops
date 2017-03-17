@@ -1,8 +1,8 @@
 ---
-- name: ensure theme directory exists
-  file:
-    dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
-    state: directory
+#- name: ensure theme directory exists
+#  file:
+#    dest: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}"
+#    state: directory
     
 # - name: download && install default specified wordpress theme
 #   unarchive:
@@ -19,6 +19,16 @@
 #  file:
 #    path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wp_theme.name }}/style.css"
 #    state: touch
+
+- name: get presson-theme
+  s3:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    bucket: the-mast
+    object: "/last-release/presson-theme-staging.tar.bz2"
+    mode: get
+    region: eu-west-1
+    dest: /tmp/presson-theme.tar.bz2
 
 - name: install theme
   shell: cd /; tar -xjvf /tmp/presson-theme.tar.bz2
