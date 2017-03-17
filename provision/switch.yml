@@ -2,18 +2,12 @@
 #
 ---
 - hosts: production
-  vars:
-    siteurl: "{{ 'https://www.themastonline.com' if 'production' in group_names else 'https://staging.themastonline.com' }}"
-
   vars_files:
     - "vars/webserver.yml"
 
   tasks:
-    - name: adjust siteurl appropriately
-      command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "siteurl" "{{siteurl}}"
-
-    - name: adjust home appropriately
-      command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "home" "{{siteurl}}"
+    - name: adjust urls appropriately
+      include: tasks/adjust_urls.yml
 
 - hosts: loadbalancer
   roles:
