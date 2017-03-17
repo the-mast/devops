@@ -1,0 +1,5 @@
+- name: adjust siteurl appropriately
+  command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "siteurl" "{{wordpress_installs[0].url}}"
+
+- name: adjust home appropriately
+  command: wp-cli option --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "home" "{{wordpress_installs[0].url}}"
