@@ -9,7 +9,7 @@
     install_fail2ban: true
 
   vars_files:
-    - "./vars/webserver.yml"
+    - "./vars/{{lookup('env','ENV_FILE')}}.yml"
 
   pre_tasks:
     - debug: msg="Configuring the following host - {{ ansible_host}}"
