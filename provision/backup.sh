@@ -1,4 +1,6 @@
 #!/bin/sh
 
-. env.sh
-ansible-playbook -v playbooks/backup_wordpress.yml -i hosts.ini
+export ENV_FILE="$1_env.sh"
+export HOSTS_FILE="$2"
+. "$ENV_FILE"
+ansible-playbook -v playbooks/backup_wordpress.yml -i "$HOSTS_FILE"
