@@ -1,20 +1,23 @@
 #!/bin/sh
 
-. env.sh
-ansible-playbook -v playbooks/putDBsToReadonly.yml -i hosts.ini
+export ENV_FILE="$1_env.sh"
+export HOSTS_FILE="$2"
+. "$ENV_FILE"
+
+ansible-playbook -v playbooks/putDBsToReadonly.yml -i "$HOSTS_FILE"
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
 fi
 
-ansible-playbook -v playbooks/backup_wordpress.yml -i hosts.ini
+ansible-playbook -v playbooks/backup_wordpress.yml -i "$HOSTS_FILE"
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
 fi
 
 ansible-playbook -v playbooks/clearBox.yml \
-    -i hosts.ini\
+    -i "$HOSTS_FILE"\
     -l staging\
     --extra-vars "data_env=production"
 if [ $? != 0 ]; then
@@ -23,7 +26,7 @@ if [ $? != 0 ]; then
 fi
 
 ansible-playbook -v site.yml\
-    -i hosts.ini\
+    -i "$HOSTS_FILE"\
     -l staging
 if [ $? != 0 ]; then
     echo "exiting"
@@ -31,7 +34,7 @@ if [ $? != 0 ]; then
 fi
 
 ansible-playbook -v playbooks/restoreUploads.yml\
-    -i hosts.ini\
+    -i "$HOSTS_FILE"\
     -l staging
 if [ $? != 0 ]; then
     echo "exiting"
@@ -39,13 +42,13 @@ if [ $? != 0 ]; then
 fi
 
 ansible-playbook -v playbooks/enableDBWrites.yml\
-    -i hosts.ini
+    -i "$HOSTS_FILE"
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
 fi
 
-ansible-playbook -v switch.yml -i hosts.ini
+ansible-playbook -v switch.yml -i "$HOSTS_FILE"
 if [ $? != 0 ]; then
     echo "exiting"
     exit 1
