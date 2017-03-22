@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.hostname = "news-day-loadbalancer.wordpress"
+
+  config.vm.network "private_network", ip: "192.168.33.70"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "1024"
+  end
+
+  config.vm.provision "file", source: "~/.ssh/news_day_africa_id_rsa", destination: "/home/ubuntu/news_day_africa_id_rsa"
+  config.vm.provision "file", source: "~/.ssh/news_day_africa_id_rsa.pub", destination: "/home/ubuntu/news_day_africa_id_rsa.pub"
+  config.vm.provision "shell", inline: "sudo cp /home/ubuntu/news_day_africa_id_rsa* /root/.ssh"
+  config.vm.provision "shell", inline: "sudo chmod 600 /root/.ssh/news_day_africa_id_rsa*"
+  config.vm.provision "shell", inline: "sudo cat /root/.ssh/news_day_africa_id_rsa.pub >/root/.ssh/authorized_keys"
+  config.vm.provision "shell", inline: "sudo chmod 600 /root/.ssh/authorized_keys"
+  config.vm.provision "shell", inline: "rm -f /home/ubuntu/news_day_africa_id_rsa*"
+  config.vm.provision "shell", inline: "apt-get install -y ansible"
+
+end
