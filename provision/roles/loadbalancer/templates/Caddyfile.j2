@@ -12,6 +12,10 @@ staging.{{ SITE_DOMAIN }} {
   gzip {
   	level 5
   }
+
+  expires {
+	match .*.jpg|.*.png|.*.svg 7d
+  }
 }
 
 {{ SITE_DOMAIN }}, www.{{ SITE_DOMAIN }} {
@@ -25,5 +29,9 @@ staging.{{ SITE_DOMAIN }} {
 
   gzip {
   	level 5
+  }
+
+  expires {
+	match .*.jpg|.*.png|.*.svg 7d
   }
 }

@@ -1,8 +1,6 @@
 ---
 - name: install caddy
-  shell: curl https://getcaddy.com | bash -s cors,ratelimit
-  args:
-    creates: /usr/local/bin/caddy
+  shell: curl https://getcaddy.com | bash -s ratelimit,expires
 
 - name: ensure correct permissions on caddy bin
   file:
