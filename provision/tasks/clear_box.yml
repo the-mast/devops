@@ -2,9 +2,3 @@
   file:
       state: absent
       path: "/var/www/html/"
-
-- name: copy data from s3 latest release data
-  include: copy_latest_release_data.yml
-
-- name: import the data
-  include: import_prod_db.yml
