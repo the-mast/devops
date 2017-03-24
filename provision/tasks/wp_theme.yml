@@ -25,7 +25,7 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     bucket: the-mast
-    object: "/last-release/presson-theme-staging.tar.bz2"
+    object: "/{{config_name}}-last-release/presson-theme-staging.tar.bz2"
     mode: get
     region: eu-west-1
     dest: /tmp/presson-theme.tar.bz2
