@@ -30,7 +30,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-site_backup.tar.bz2"
+        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-{{config_name}}-{{ansible_hostname}}-site_backup.tar.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ site_backup_filename }}
@@ -40,7 +40,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "/last-release/site_backup-{{backup_postfix}}.tar.bz2"
+        object: "/{{config_name}}-last-release/site_backup-{{backup_postfix}}.tar.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ site_backup_filename }}
@@ -55,7 +55,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-site_uploads_backup.tar.bz2"
+        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-{{config_name}}-{{ansible_hostname}}-site_uploads_backup.tar.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ wp_uploads_backup_filename }}
@@ -65,7 +65,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "/last-release/site_uploads_backup-{{backup_postfix}}.tar.bz2"
+        object: "/{{config_name}}-last-release/site_uploads_backup-{{backup_postfix}}.tar.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ wp_uploads_backup_filename }}
@@ -81,7 +81,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-sql_backup.sql.bz2"
+        object: "{{ backup_prefix }}/{{ ansible_date_time.epoch }}-{{config_name}}-{{ansible_hostname}}-sql_backup.sql.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ sql_backup_filename }}
@@ -91,7 +91,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "/last-release/sql_backup-{{backup_postfix}}.bz2"
+        object: "/{{config_name}}-last-release/sql_backup-{{backup_postfix}}.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/{{ sql_backup_filename }}
@@ -122,7 +122,7 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         bucket: the-mast
-        object: "/last-release/presson-theme-{{backup_postfix}}.tar.bz2"
+        object: "/{{config_name}}-last-release/presson-theme-{{backup_postfix}}.tar.bz2"
         mode: put
         region: eu-west-1
         src: /tmp/presson-theme.tar.bz2
