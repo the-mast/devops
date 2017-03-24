@@ -25,10 +25,6 @@
     - name: clear the box
       include: tasks/clear_box.yml
       when: clear_box
-
-    - name: import db data
-      include: tasks/import_db_data.yml
-      when: data_env in ('staging','production')
     - name: check if wordpress theme directory already exists
       stat:
         path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wordpress_installs[0].themes[0].name }}"
@@ -61,11 +57,15 @@
     - name: restart apache
       service: name=apache2 state=restarted
   roles:
+
     - role: database
       dbhost: "{{ wordpress_installs[0].dbhost}}"
       dbname: "{{ wordpress_installs[0].dbname }}"
       dbuser: "{{ wordpress_installs[0].dbuser }}"
       dbpass: "{{ wordpress_installs[0].dbpass }}"
+
+    - role: import_db_data
+      when: data_env in ('staging','production')
 
     - role: webserver
 
