@@ -26,7 +26,7 @@
 
 - name: import the data
   shell: mysql -D {{wordpress_installs[0].dbname}} </tmp/datadump.sql
-    when: data_env in ('staging','prodcution')
+  when: data_env in ('staging','prodcution')
 
 - name: clean dump files
   file:
