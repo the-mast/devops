@@ -7,12 +7,12 @@
 
 - name: ensure site directory exists for staging
   file:
-    path: "/var/www/staging.{{ SITE_DOMAIN }}/robots.txt"
+    path: "/var/www/staging.{{ SITE_DOMAIN }}"
     state: directory
 
 - name: add robots.txt for staging
   copy:
-    dest: "/var/www/staging.{{ SITE_DOMAIN }}/robots.txt"
+    dest: "/var/www/staging.{{ SITE_DOMAIN }}"
     src: robots.txt 
     owner: www-data
     group: www-data
