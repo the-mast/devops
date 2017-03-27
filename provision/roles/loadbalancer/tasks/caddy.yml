@@ -1,6 +1,8 @@
 ---
 - name: install caddy
   shell: curl https://getcaddy.com | bash -s ratelimit,expires
+  args:
+    creates: /usr/local/bin/caddy
 
 - name: ensure correct permissions on caddy bin
   file:
