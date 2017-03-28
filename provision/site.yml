@@ -35,6 +35,10 @@
       when: not theme_dir.stat.exists
       
   post_tasks:
+    - name: setup ajax load more plugin
+      include: tasks/wp_alm.yml
+      tags: wip
+
     - name: restore_uploads
       include: tasks/restore_uploads.yml
 
