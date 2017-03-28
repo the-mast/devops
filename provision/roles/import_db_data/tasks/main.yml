@@ -30,4 +30,4 @@
     path: "/tmp/datadump.sql"
 
 - name: adjust db password
-  shell: mysql --execute="SET PASSWORD FOR '{{wordpress_installs[0].DBUSER}}'@'{{wordpress_installs[0].DBHOST}}' = password('{{wordpress_installs[0].DBPASS}}');"
+  shell: mysql --execute="SET PASSWORD FOR '{{wordpress_installs[0].dbuser}}'@'{{wordpress_installs[0].dbhost}}' = password('{{wordpress_installs[0].dbpass}}');"
