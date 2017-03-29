@@ -2,3 +2,11 @@
   file:
       state: absent
       path: "{{wordpress_installs[0].path}}/"
+
+- name: drop user
+  mysql_user:
+    name: "{{ dbuser }}"
+    state: absent
+
+- name: drop database
+  mysql_db: login_host="{{ dbhost }}" name="{{ dbname }}" state=present
