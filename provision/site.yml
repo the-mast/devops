@@ -25,6 +25,7 @@
     - name: clear the box
       include: tasks/clear_box.yml
       when: clear_box
+
     - name: check if wordpress theme directory already exists
       stat:
         path: "{{ wordpress_installs[0].path }}/wp-content/themes/{{ wordpress_installs[0].themes[0].name }}"
