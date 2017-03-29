@@ -1,4 +1,4 @@
 - name: delete website
   file:
       state: absent
-      path: "/var/www/html/"
+      path: "{{wordpress_installs[0].path}}/"
