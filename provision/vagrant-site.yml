@@ -29,11 +29,9 @@
   post_tasks:
     - name: import fixtures data
       include: tasks/import_fixtures.yml
-      tags: wip
 
     - name: setup ajax load more plugin
       include: tasks/wp_alm.yml
-      tags: wip
         
     - name: restart apache
       service: name=apache2 state=restarted

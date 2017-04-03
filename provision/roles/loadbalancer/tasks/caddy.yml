@@ -61,7 +61,6 @@
     owner: www-data
     group: www-data
     mode: 0444
-  tags: wip
 
 - name: install as systemd service
   get_url:

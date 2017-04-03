@@ -34,7 +34,6 @@
         line: 'PasswordAuthentication no'
         backrefs: true
       notify: restart sshd
-      tags: wip
 
     - name: clear the box
       include: tasks/clear_box.yml
@@ -52,7 +51,6 @@
   post_tasks:
     - name: setup ajax load more plugin
       include: tasks/wp_alm.yml
-      tags: wip
 
     - name: restore_uploads
       include: tasks/restore_uploads.yml
@@ -71,7 +69,6 @@
     - name: import fixtures data
       include: tasks/import_fixtures.yml
       when: data_env in ('fixtures')
-      tags: wip
 
     - name: Ensure wp_admin password is set correctly after import from production or staging db
       shell: wp-cli user --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "{{wordpress_installs[0].admin_name}}" --user_pass="{{wordpress_installs[0].admin_password}}"
