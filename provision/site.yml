@@ -21,6 +21,7 @@
         - unzip
         - python-boto
         - python-bz2file
+        - iptables
 
     - name: clear the box
       include: tasks/clear_box.yml
