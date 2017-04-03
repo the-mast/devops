@@ -12,7 +12,7 @@
     - "./vars/webserver.yml"
 
   pre_tasks:
-    - debug: msg="Configuring the following host - {{ ansible_host}}"
+    - debug: msg=Configuring the following host - {{ ansible_host}}
 
     - name: common dependencies
       apt: name={{ item }} state=latest
@@ -22,6 +22,19 @@
         - python-boto
         - python-bz2file
         - iptables
+
+    - name: set correct timezone
+      timezone:
+        name: Africa/Lusaka
+
+    - name: disable password login for ssh
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#PasswordAuthentication no'
+        line: 'PasswordAuthentication no'
+        backrefs: true
+      notify: restart sshd
+      tags: wip
 
     - name: clear the box
       include: tasks/clear_box.yml
@@ -83,3 +96,9 @@
 
     - role: wp_filters
       notify: restart apache
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
