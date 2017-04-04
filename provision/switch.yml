@@ -9,6 +9,9 @@
     - name: adjust urls appropriately
       include: tasks/adjust_urls.yml
 
+    - name: Ensure wp_admin password is set correctly after import from production or staging db
+      shell: wp-cli user --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "{{wordpress_installs[0].admin_name}}" --user_pass="{{wordpress_installs[0].admin_password}}"
+
 - hosts: loadbalancer
   roles:
     - role: loadbalancer
