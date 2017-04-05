@@ -1,6 +1,18 @@
 - hosts: webservers
   vars:
     host_type: "{{ 'production' if 'production' in group_names else 'staging' }}"
+
+  pre_tasks:
+    - name: update pip
+      pip:
+        name: 'pip'
+        state: latest
+
+    - name: install setup tools
+      apt:
+        name: 'python-setuptools'
+        state: latest
+
   roles:
     - role: 'ssilab.aws-cli'
       aws_output_format: 'json'
