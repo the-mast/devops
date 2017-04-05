@@ -14,8 +14,8 @@
     - name: cron
       cron:
         name: 'backup'
-        minute: '34'
-        hour: '10'
+        minute: '30'
+        hour: '23'
         job: '/root/backup.sh'
 
   post_tasks:
