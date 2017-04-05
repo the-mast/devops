@@ -1,0 +1,65 @@
+#!/bin/bash
+
+export BKP_HOSTNAME="{{ansible_hostname}}"
+export BKP_HOSTTYPE="{{ host_type}}"
+export AWS_BUCKET="the-mast"
+export AWS_PATH="$AWS_BUCKET/$(date +%Y/%m/%d)"
+export AWS_FILE_PREFIX="$AWS_PATH/$(date +%s)-$BKP_HOSTTYPE-$BKP_HOSTNAME"
+export BKP_LOG_FILE=/var/log/backup.log
+
+function cleanup()
+{
+    rm -f /tmp/wordpress.tar.bz2
+    rm -f /tmp/db.sql.bz2
+}
+
+function log_message()
+{
+    echo "$(date +%Y/%m/%d-%H:%M:%S)|$1" >>$BKP_LOG_FILE 2>&1
+}
+
+log_message "Starting backup"
+
+log_message "Creating wordpress backup file"
+tar -vjcf /tmp/wordpress.tar.bz2 /var/www/html
+
+if [ $? -ne 0 ]; then
+  log_message "failed creating wordpress backup file"
+  cleanup
+  exit 1
+fi
+log_message "SUCCESSFULLY created wordpress backup file"
+
+log_message "Creating database backup file"
+mysqldump --all-databases | bzip2 >/tmp/db.sql.bz2
+
+if [ $? -ne 0 ]; then
+  log_message "failed creating database backup file"
+  cleanup
+  exit 2
+fi
+log_message "SUCCESSFULLY created database backup file"
+
+log_message "Transmitting wordpress backup to s3"
+/usr/local/bin/aws s3 cp /tmp/wordpress.tar.bz2 "s3://$AWS_FILE_PREFIX-wordpress.tar.bz2" >>$BKP_LOG_FILE 2>&1
+
+if [ $? -ne 0 ]; then
+  log_message "failed to send wordpress backup to s3"
+  cleanup
+  exit 3
+fi
+log_message "SUCCESSFULLY transmitted wordpress backup to s3"
+
+log_message "Transmitting database backup to s3"
+/usr/local/bin/aws s3 cp /tmp/db.sql.bz2 "s3://$AWS_FILE_PREFIX-database.sql.bz2" >>$BKP_LOG_FILE 2>&1
+
+if [ $? -ne 0 ]; then
+  log_message "failed to send database backup to s3"
+  cleanup
+  exit 4
+fi
+log_message "SUCCESSFULLY transmitted database backup to s3"
+
+cleanup
+
+log_message "backup complete"

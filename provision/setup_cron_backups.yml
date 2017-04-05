@@ -1,0 +1,23 @@
+- hosts: webservers
+  vars:
+    host_type: "{{ 'production' if 'production' in group_names else 'staging' }}"
+  roles:
+    - role: 'ssilab.aws-cli'
+      aws_output_format: 'json'
+      aws_region: 'eu-west-1'
+      aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+      aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+
+    - role: cron_backup
+
+  tasks:
+    - name: cron
+      cron:
+        name: 'backup'
+        minute: '34'
+        hour: '10'
+        job: '/root/backup.sh'
+
+  post_tasks:
+    - name: move the config to /root
+      shell: rm -rf /root/.aws; mv /home/root/.aws /root

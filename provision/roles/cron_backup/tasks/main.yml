@@ -1,0 +1,10 @@
+- debug: msg="hostip {{ansible_host}}"
+- debug: msg="hostanme {{ansible_hostname}}"
+- debug: msg="group {{group_names}}"
+- name: template the cron backup script
+  template:
+    dest: /root/backup.sh
+    src: backup.j2
+    owner: root
+    group: www-data
+    mode: 0500
