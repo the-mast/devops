@@ -13,6 +13,12 @@
       shell: wp-cli user --allow-root --no-color --path="{{wordpress_installs[0].path}}" update "{{wordpress_installs[0].admin_name}}" --user_pass="{{wordpress_installs[0].admin_password}}"
 
 - hosts: loadbalancer
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
   roles:
     - role: loadbalancer
       TLS_EMAIL: 'the-mast@thoughtworks.com'
